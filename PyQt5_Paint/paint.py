@@ -15,7 +15,7 @@ class Window(QMainWindow):
         width = 1400
         height = 800
 
-        icon = "PyQt5_Paint/img/web.png"
+        icon = "C:/Users/Admin/Documents/work/python/PyQt5_Paint/img/web.png"
         self.setWindowTitle(title)
         self.setGeometry(top, left, width, height)
         self.setWindowIcon(QIcon(icon))
@@ -36,12 +36,12 @@ class Window(QMainWindow):
         brushColor = mainMenu.addMenu("색상")
         drawType = mainMenu.addMenu("그리기 타입")
 
-        saveAction = QAction(QIcon("PyQt5_Paint/img/save.png"), "저장",self)
+        saveAction = QAction(QIcon("C:/Users/Admin/Documents/work/python/PyQt5_Paint/img/save.png"), "저장",self)
         saveAction.setShortcut("Ctrl+S")
         fileMenu.addAction(saveAction)
         saveAction.triggered.connect(self.save)
         
-        clearAction = QAction(QIcon("PyQt5_Paint/img/delete.png"), "초기화", self)
+        clearAction = QAction(QIcon("C:/Users/Admin/Documents/work/python/PyQt5_Paint/img/delete.png"), "초기화", self)
         clearAction.setShortcut("Ctrl+C")
         fileMenu.addAction(clearAction)
         clearAction.triggered.connect(self.clear)
@@ -62,53 +62,53 @@ class Window(QMainWindow):
         brushSize.addAction(ninepxAction)
         ninepxAction.triggered.connect(self.ninePixel)
 
-        blackAction = QAction(QIcon("PyQt5_Paint/img/black.png"), "검정색", self)
+        blackAction = QAction(QIcon("C:/Users/Admin/Documents/work/python/PyQt5_Paint/img/black.png"), "검정색", self)
         blackAction.setShortcut("Ctrl+B")
         brushColor.addAction(blackAction)
         blackAction.triggered.connect(self.blackColor)
 
-        blueAction = QAction(QIcon("PyQt5_Paint/img/blue.png"), "파란색", self)
+        blueAction = QAction(QIcon("C:/Users/Admin/Documents/work/python/PyQt5_Paint/img/blue.png"), "파란색", self)
         blueAction.setShortcut("Ctrl+U")
         brushColor.addAction(blueAction)
         blueAction.triggered.connect(self.blueColor)
 
-        whitekAction = QAction(QIcon("PyQt5_Paint/img/white.png"), "하얀색", self)
+        whitekAction = QAction(QIcon("C:/Users/Admin/Documents/work/python/PyQt5_Paint/img/white.png"), "하얀색", self)
         whitekAction.setShortcut("Ctrl+W")
         brushColor.addAction(whitekAction)
         whitekAction.triggered.connect(self.whiteColor)
 
-        redAction = QAction(QIcon("PyQt5_Paint/img/red.png"), "빨강색", self)
+        redAction = QAction(QIcon("C:/Users/Admin/Documents/work/python/PyQt5_Paint/img/red.png"), "빨강색", self)
         redAction.setShortcut("Ctrl+R")
         brushColor.addAction(redAction)
         redAction.triggered.connect(self.redColor)
 
-        greenAction = QAction(QIcon("PyQt5_Paint/img/green.png"), "초록색", self)
+        greenAction = QAction(QIcon("C:/Users/Admin/Documents/work/python/PyQt5_Paint/img/green.png"), "초록색", self)
         greenAction.setShortcut("Ctrl+G")
         brushColor.addAction(greenAction)
         greenAction.triggered.connect(self.greenColor)
 
-        yellowAction = QAction(QIcon("PyQt5_Paint/img/yellow.png"), "노란색", self)
+        yellowAction = QAction(QIcon("C:/Users/Admin/Documents/work/python/PyQt5_Paint/img/yellow.png"), "노란색", self)
         yellowAction.setShortcut("Ctrl+Y")
         brushColor.addAction(yellowAction)
         yellowAction.triggered.connect(self.yellowColor)
 
-        penAction = QAction(QIcon("PyQt5_Paint/img/pen.png"), "펜", self)
+        penAction = QAction(QIcon("C:/Users/Admin/Documents/work/python/PyQt5_Paint/img/pen.png"), "펜", self)
         drawType.addAction(penAction)
         penAction.triggered.connect(self.penDraw)
 
-        rectAction = QAction(QIcon("PyQt5_Paint/img/rectangle.png"), "사각형", self)
+        rectAction = QAction(QIcon("C:/Users/Admin/Documents/work/python/PyQt5_Paint/img/rectangle.png"), "사각형", self)
         drawType.addAction(rectAction)
         rectAction.triggered.connect(self.rectDraw)
 
-        circleAction = QAction(QIcon("PyQt5_Paint/img/circle.png"), "원", self)
+        circleAction = QAction(QIcon("C:/Users/Admin/Documents/work/python/PyQt5_Paint/img/circle.png"), "원", self)
         drawType.addAction(circleAction)
         circleAction.triggered.connect(self.circleDraw)
 
-        lineAction = QAction(QIcon("PyQt5_Paint/img/line.png"), "선", self)
+        lineAction = QAction(QIcon("C:/Users/Admin/Documents/work/python/PyQt5_Paint/img/line.png"), "선", self)
         drawType.addAction(lineAction)
         lineAction.triggered.connect(self.lineDraw)
 
-        triangleAction = QAction(QIcon("PyQt5_Paint/img/triangle.png"), "삼각형", self)
+        triangleAction = QAction(QIcon("C:/Users/Admin/Documents/work/python/PyQt5_Paint/img/triangle.png"), "삼각형", self)
         drawType.addAction(triangleAction)
         triangleAction.triggered.connect(self.triangleDraw)
 
