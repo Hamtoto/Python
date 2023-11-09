@@ -9,7 +9,6 @@ class Window(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        #사전 설정
         title = "그림판"
         top = 200
         left = 200
@@ -29,26 +28,24 @@ class Window(QMainWindow):
         self.brushSize = 5
         self.brushColor = Qt.black
         self.lastPoint = QPoint()
+        self.drawType = "pen"
 
-        #메뉴바 설정
         mainMenu = self.menuBar()
         fileMenu = mainMenu.addMenu("파일")
         brushSize = mainMenu.addMenu("팬 사이즈")
         brushColor = mainMenu.addMenu("색상")
+        drawType = mainMenu.addMenu("그리기 타입")
 
-        #Save
         saveAction = QAction(QIcon("PyQt5_Paint/img/save.png"), "저장",self)
         saveAction.setShortcut("Ctrl+S")
         fileMenu.addAction(saveAction)
         saveAction.triggered.connect(self.save)
         
-        #초기화
         clearAction = QAction(QIcon("PyQt5_Paint/img/delete.png"), "초기화", self)
         clearAction.setShortcut("Ctrl+C")
         fileMenu.addAction(clearAction)
         clearAction.triggered.connect(self.clear)
         
-        #팬 사이즈 메뉴
         threepxAction = QAction("3px", self)
         brushSize.addAction(threepxAction)
         threepxAction.triggered.connect(self.threePixel)
@@ -65,7 +62,6 @@ class Window(QMainWindow):
         brushSize.addAction(ninepxAction)
         ninepxAction.triggered.connect(self.ninePixel)
 
-        #색상 메뉴
         blackAction = QAction(QIcon("PyQt5_Paint/img/black.png"), "검정색", self)
         blackAction.setShortcut("Ctrl+B")
         brushColor.addAction(blackAction)
@@ -96,8 +92,26 @@ class Window(QMainWindow):
         brushColor.addAction(yellowAction)
         yellowAction.triggered.connect(self.yellowColor)
 
+        penAction = QAction(QIcon("PyQt5_Paint/img/pen.png"), "펜", self)
+        drawType.addAction(penAction)
+        penAction.triggered.connect(self.penDraw)
 
-        #툴바
+        rectAction = QAction(QIcon("PyQt5_Paint/img/rectangle.png"), "사각형", self)
+        drawType.addAction(rectAction)
+        rectAction.triggered.connect(self.rectDraw)
+
+        circleAction = QAction(QIcon("PyQt5_Paint/img/circle.png"), "원", self)
+        drawType.addAction(circleAction)
+        circleAction.triggered.connect(self.circleDraw)
+
+        lineAction = QAction(QIcon("PyQt5_Paint/img/line.png"), "선", self)
+        drawType.addAction(lineAction)
+        lineAction.triggered.connect(self.lineDraw)
+
+        triangleAction = QAction(QIcon("PyQt5_Paint/img/triangle.png"), "삼각형", self)
+        drawType.addAction(triangleAction)
+        triangleAction.triggered.connect(self.triangleDraw)
+
         self.statusBar()
         self.toolbar = self.addToolBar('파일 툴바')
         self.toolbar.addAction(saveAction)
@@ -112,44 +126,54 @@ class Window(QMainWindow):
         ColorToolBar.addAction(blueAction)
         ColorToolBar.addAction(yellowAction)
 
-    #마우스 눌림 이벤트
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
             self.drawing = True
             self.lastPoint = event.pos()
+            self.imageTemp = self.image.copy()
 
-    #마우스 이동 이벤트
     def mouseMoveEvent(self, event):
         if(event.buttons() & Qt.LeftButton) & self.drawing:
             painter = QPainter(self.image)
             painter.setPen(QPen(self.brushColor, self.brushSize, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
-            painter.drawLine(self.lastPoint, event.pos())
-            self.lastPoint = event.pos()
+            if self.drawType == "pen":
+                painter.drawLine(self.lastPoint, event.pos())
+                self.lastPoint = event.pos()    
+            else:    
+                painter.end()
+                self.image = self.imageTemp.copy()
+                painter = QPainter(self.image)
+                painter.setPen(QPen(self.brushColor, self.brushSize, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+                if self.drawType == "rectangle":
+                    painter.drawRect(self.lastPoint.x(), self.lastPoint.y(), event.pos().x() - self.lastPoint.x(), event.pos().y() - self.lastPoint.y())
+                elif self.drawType == "circle":
+                    painter.drawEllipse(self.lastPoint.x(), self.lastPoint.y(), event.pos().x() - self.lastPoint.x(), event.pos().y() - self.lastPoint.y())
+                elif self.drawType == "line":
+                    painter.drawLine(self.lastPoint, event.pos())
+                elif self.drawType == "triangle":
+                    points = [self.lastPoint, QPoint(event.pos().x(), self.lastPoint.y()), event.pos()]
+                    painter.drawPolygon(*points)
+            painter.end()
             self.update()
 
-    #마우스 누르는동안 이벤트
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
             self.drawing = False
 
-    #그리기 이벤트
     def paintEvent(self, event):
         canvasPainter  = QPainter(self)
         canvasPainter.drawImage(self.rect(),self.image, self.image.rect() )
 
-    #저장 이벤트
     def save(self):
         filePath, _ = QFileDialog.getSaveFileName(self, "Save Image", "", "PNG(*.png);;JPEG(*.jpg *.jpeg);;All Files(*.*) ")
         if filePath == "":
             return
         self.image.save(filePath)
 
-    #초기화 함수 
     def clear(self):
         self.image.fill(Qt.white)
         self.update()
 
-    #팬 사이즈 설정 함수
     def threePixel(self):
         self.brushSize = 3
 
@@ -162,7 +186,6 @@ class Window(QMainWindow):
     def ninePixel(self):
         self.brushSize = 10
 
-    #색상 설정 함수
     def blackColor(self):
         self.brushColor = Qt.black
         
@@ -181,7 +204,30 @@ class Window(QMainWindow):
     def yellowColor(self):
         self.brushColor = Qt.yellow
 
+    def rectDraw(self):
+        self.drawType = "rectangle"
 
+    def circleDraw(self):
+        self.drawType = "circle"
+
+    def lineDraw(self):
+        self.drawType = "line"
+
+    def triangleDraw(self):
+        self.drawType = "triangle"
+
+    def penDraw(self):
+        self.drawType = "pen"
+
+    def resizeEvent(self, event):
+        if self.width() > self.image.width() or self.height() > self.image.height():
+            newImage = QImage(self.width(), self.height(), QImage.Format_RGB32)
+            newImage.fill(Qt.white)
+            painter = QPainter(newImage)
+            painter.drawImage(QPoint(), self.image)
+            self.image = newImage
+        QMainWindow.resizeEvent(self, event)
+       
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = Window()
