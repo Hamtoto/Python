@@ -1,1 +1,2 @@
-comdong.bufs.ac.kr/ktg Crawling code
+#Python Tokenizer, Crawling
+comdong.bufs.ac.kr/ktg
