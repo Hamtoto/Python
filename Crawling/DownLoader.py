@@ -2,6 +2,7 @@ import os
 import requests
 import json
 
+#절대경로 사용할것
 with open('C:\\Users\gohg0\OneDrive\Documents\works\새 폴더\python\Crawling\data.json', 'r', encoding='utf-8') as json_file:
     data = json.load(json_file)
 
