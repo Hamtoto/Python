@@ -56,8 +56,8 @@ def main(wine_file, api_key, cse_id, save_dir="wine_images"):
 
 if __name__ == "__main__":
     #API, Search ID
-    api_key = "your_google_api_key"
-    cse_id = "your_custom_search_engine_id"
+    api_key = ""
+    cse_id = ""
 
     #file path
     wine_file = "./name.txt"
