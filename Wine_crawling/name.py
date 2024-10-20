@@ -7,9 +7,11 @@ import os
 openai.api_key = ""
 
 def get_original_wine_name(plu_nm):
-    # GPT-4에 전송할 프롬프트 작성
     messages = [
-        {"role": "system", "content": "당신은 술 전문가 입니다. 사용자가 한국에서 유통되는 와인 이름을 말할건데 해당 와인의 원래 이름을 찾아서 Json 형식으로 응답합니다."},
+        {
+            "role": "system", 
+            "content": "당신은 술 전문가 입니다. 사용자가 한국에서 유통되는 와인 이름을 말할건데 해당 와인의 원래 이름을 찾아서 Json 형식으로 응답합니다. 최대한 찾아서 대답하고 못찾는 경우 NULL 로 응답하세요 json 형식:original_wine_name: 와인의 원래 이름, name_kr: 한국어로 번역된 와인의 이름"
+        },
         {"role": "user", "content": f"와인 이름: {plu_nm}"}
     ]
     
@@ -28,7 +30,7 @@ def get_original_wine_name(plu_nm):
         wine_info = json.loads(response_text)
         return wine_info
     except (json.JSONDecodeError, IndexError, KeyError):
-        return {"name_original": None, "name_kr": plu_nm}
+        return {"name_original": plu_nm, "name_kr": plu_nm}
 
 def process_csv(input_csv_path, output_json_path):
     # CSV 파일 불러오기
@@ -38,21 +40,12 @@ def process_csv(input_csv_path, output_json_path):
     results = []
     for idx, row in df.iterrows():
         print(f"Processing row {idx+1}: {row.to_dict()}")
-        wine_info = get_original_wine_name(row['PLU_NM'])
+        wine_info = get_original_wine_name(row['PLU_NM'].replace(',', ''))
         print(f"Wine info: {wine_info}")
         result = {
-            "STORE_CD": row['STORE_CD'],
-            "PLU_CD": row['GPLU_CDNRL_PRC'],
-            "SCAN_CD1": row['SCAN_CD1'],
-            "SCAN_CD2": row['SCAN_CD2'],
             "PLU_NM": row['PLU_NM'],
-            "name_original": wine_info.get("name_original"),
-            "name_kr": wine_info.get("name_kr"),
-            "BRAND_CD": row['BRAND_CD'],
-            "GPLU_CDNRL_PRC": row['GPLU_CDNRL_PRC'],
-            "PRC_EVT_PRC": row['PRC_EVT_PRC'],
-            "PRC_EVT_ST_DT": row['PRC_EVT_ST_DT'],
-            "PRC_EVT_ED_DT": row['PRC_EVT_ED_DT']
+            "name_original": wine_info.get("original_wine_name", row['PLU_NM']),
+            "name_kr": wine_info.get("name_kr", row['PLU_NM'])
         }
         results.append(result)
         print(f"Result appended: {result}")
