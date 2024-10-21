@@ -1,7 +1,6 @@
 import openai
 import pandas as pd
 import json
-import os
 
 # GPT API 키 설정
 openai.api_key = ""
